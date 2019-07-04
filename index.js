@@ -9,7 +9,7 @@ app.listen(8000, () => {
 });
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Hey', message: 'Hello there!' })
+  res.render('index', { title: 'Battleship' })
 });
 
 app.get('/boards/playerA', function (req, res) {
