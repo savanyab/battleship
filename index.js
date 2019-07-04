@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/boards/playerA', function (req, res) {
-  // TODO
+  res.render('playerABoard');
 });
 
 app.get('/boards/playerB', function (req, res) {

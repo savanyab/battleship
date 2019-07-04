@@ -5,7 +5,7 @@ html
     - var columns = [' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     - var rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-    h2 Welcome to Battleship!
+    h2 Player A's board
     table(border=2)
       tr
         each column in columns
@@ -16,12 +16,16 @@ html
             if j == 0
                 td= rows[i]
             else
-              td= 0
+              td= ' '
         - }
       - }
-    
-    a(href="/boards/PlayerA")
-      button Player A's board
 
-
-          
+    h3 Shoot at:
+    select 
+      - for (var i = 1; i < columns.length; i++) {
+          option= columns[i]
+      - }
+    select
+      each row in rows
+        option= row
+    button Shoot
