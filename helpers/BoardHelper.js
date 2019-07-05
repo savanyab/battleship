@@ -1,9 +1,20 @@
-var board = new Array(10);
+var boardA = new Array(10);
 for (let i = 0; i < 10; i++) {
-    board[i] = new Array(10);
+    boardA[i] = new Array(10);
     for (let j = 0; j < 11; j++) {
-        board[i][j] = 'W';
+        boardA[i][j] = 'A';
     }
 }
 
-module.exports = board;
+var boardB = new Array(10);
+for (let i = 0; i < 10; i++) {
+    boardB[i] = new Array(10);
+    for (let j = 0; j < 11; j++) {
+        boardB[i][j] = 'B';
+    }
+}
+
+module.exports = {
+    boardA,
+    boardB
+};

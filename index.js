@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const playerABoard = require('./helpers/BoardHelper')
+const board = require('./helpers/BoardHelper')
 
 app.set('views', './views');
 app.set('view engine', 'jade');
@@ -14,11 +14,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/boards/playerA', function (req, res) {
-  res.render('playerABoard', {board: playerABoard});
+  res.render('playerABoard', {board: board.boardA});
 });
 
 app.get('/boards/playerB', function (req, res) {
-  // TODO
+  res.render('playerBBoard', {board: board.boardB});
 });
 
 app.post('/boards/playerA/shoot', function (req, res) {
