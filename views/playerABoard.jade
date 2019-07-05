@@ -16,16 +16,17 @@ html
             if j == 0
                 td= rows[i]
             else
-              td= ' '
+              td= board[i][j-1]
         - }
       - }
 
-    h3 Shoot at:
-    select 
-      - for (var i = 1; i < columns.length; i++) {
-          option= columns[i]
-      - }
-    select
-      each row in rows
-        option= row
-    button Shoot
+    form(action="/boards/playerA/shoot" method="POST")
+      h3 Shoot at:
+      select 
+        - for (var i = 1; i < columns.length; i++) {
+            option= columns[i]
+        - }
+      select
+        each row in rows
+          option= row
+      input(type="submit" value="Shoot")

@@ -1,8 +1,9 @@
 var board = new Array(10);
-
-for (i=0; i < board.length(); i++) {
+for (let i = 0; i < 10; i++) {
     board[i] = new Array(10);
-    for (j=0; j > board[i].length(); i++) {
-        board[i][j] = 0;
+    for (let j = 0; j < 10; j++) {
+        board[i][j] = 'W';
     }
 }
+
+module.exports = board;
