@@ -16,17 +16,18 @@ html
             if j == 0
                 td= rows[i]
             else
-              td= board[i][j]
+              case board[i][j]                  
+                when 1
+                  td
+                    img(src="images/ship.jpg" alt="ship")
+                when 2
+                  td
+                    img(src="images/miss.jpg" alt="miss")
+                when 3
+                  td
+                    img(src="images/hit.jpg" alt="hit")
+                default
+                  td
+                    img(src="images/water.jpg" alt="water")
         - }
       - }
-
-    form(action="/boards/playerA/shoot" method="POST")
-      h3 Shoot at:
-      select 
-        - for (var i = 1; i < columns.length; i++) {
-            option= columns[i]
-        - }
-      select
-        each row in rows
-          option= row
-      input(type="submit" value="Shoot")
