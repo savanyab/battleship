@@ -25,12 +25,21 @@ app.get('/boards/playerB', function (req, res) {
 });
 
 app.post('/boards/playerA/shoot', function (req, res) {
-    board.shootToCoordinates(req.body.letterCoordinate, req.body.numberCoordinate, board.boardA);
-    res.render('playerABoard', { board: board.boardA });  
+  const letterCoordinate = req.body.letterCoordinate;
+  const numberCoordinate = req.body.numberCoordinate;
+  const boardA = board.boardA;
+  const playerA = 'A';
+    board.shoot(letterCoordinate, numberCoordinate, boardA, playerA);
+    res.render('playerABoard', { board: boardA });  
 });
 
 app.post('/boards/playerB/shoot', function (req, res) {
-  // TODO
+  const letterCoordinate = req.body.letterCoordinate;
+  const numberCoordinate = req.body.numberCoordinate;
+  const boardB = board.boardB;
+  const playerB = 'B';
+  board.shoot(letterCoordinate, numberCoordinate, boardB, playerB);
+    res.render('playerBBoard', { board: boardB });
 });
 
 app.put('/boards/playerA', function (req, res) {

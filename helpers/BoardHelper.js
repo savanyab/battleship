@@ -10,7 +10,7 @@ var boardB = new Array(10);
 for (let i = 0; i < 10; i++) {
     boardB[i] = new Array(10);
     for (let j = 0; j < 11; j++) {
-        boardB[i][j] = 'B';
+        boardB[i][j] = 0;
     }
 }
 
@@ -27,19 +27,40 @@ const values = {
     J: 10
 }
 
-function shootToCoordinates(letterCoordinate, numberCoordinate, board) {
+function shoot(letterCoordinate, numberCoordinate, board, player) {
     letterCoordinateValue = values[letterCoordinate];
-    let cell = board[numberCoordinate-1][letterCoordinateValue];
-    if (cell == 0) {
-        boardA[numberCoordinate-1][letterCoordinateValue] = 2;
+    let cell = board[numberCoordinate - 1][letterCoordinateValue];
+    let missed = cell == 0;
+    let hit = cell == 1;
+    if (missed) {
+        setPlayersCellToMissed(player, letterCoordinateValue, numberCoordinate);
     }
-    if (cell == 1) {
-        boardA[numberCoordinate-1][letterCoordinateValue] = 3;
+    if (hit) {
+        setPlayersCellToHit(player, letterCoordinateValue, numberCoordinate)
     }
 }
+
+function setPlayersCellToMissed(player, letterCoordinate, numberCoordinate) {
+    if (player == 'A') {
+        boardA[numberCoordinate-1][letterCoordinate] = 2;
+    }
+    if (player == 'B') {
+        boardB[numberCoordinate-1][letterCoordinate] = 2;
+    }
+}
+
+function setPlayersCellToHit(player, letterCoordinate, numberCoordinate) {
+    if (player == 'A') {
+        boardA[numberCoordinate-1][letterCoordinate] = 3;
+    }
+    if (player == 'B') {
+        boardB[numberCoordinate-1][letterCoordinate] = 3;
+    }
+}
+
 
 module.exports = {
     boardA,
     boardB,
-    shootToCoordinates
+    shoot
 };
