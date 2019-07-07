@@ -43,9 +43,11 @@ app.post('/boards/playerB/shoot', function (req, res) {
 });
 
 app.put('/boards/playerA', function (req, res) {
-  // TODO
+  board.generateBoard(req.body, 'A');
+  res.render('playerABoard', { board: board.boardA });
 });
 
 app.put('/boards/playerB', function (req, res) {
-  // TODO
+  board.generateBoard(req.body, 'B');
+  res.render('playerBBoard', { board: board.boardB });
 });
