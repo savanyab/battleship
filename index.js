@@ -17,11 +17,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/boards/playerA', function (req, res) {
-  res.render('playerABoard', {board: board.boardA});
+  res.render('playerBoard', {board: board.boardA, boardTitle: 'Player A\'s board'});
 });
 
 app.get('/boards/playerB', function (req, res) {
-  res.render('playerBBoard', {board: board.boardB});
+  res.render('playerBoard', {board: board.boardB, boardTitle: 'Player B\'s board'});
 });
 
 app.post('/boards/playerA/shoot', function (req, res) {
@@ -30,7 +30,7 @@ app.post('/boards/playerA/shoot', function (req, res) {
   const boardA = board.boardA;
   const playerA = 'A';
     board.shoot(letterCoordinate, numberCoordinate, boardA, playerA);
-    res.render('playerABoard', { board: boardA });  
+    res.render('playerBoard', { board: boardA, boardTitle: 'Player A\'s board' });  
 });
 
 app.post('/boards/playerB/shoot', function (req, res) {
@@ -39,15 +39,15 @@ app.post('/boards/playerB/shoot', function (req, res) {
   const boardB = board.boardB;
   const playerB = 'B';
   board.shoot(letterCoordinate, numberCoordinate, boardB, playerB);
-    res.render('playerBBoard', { board: boardB });
+    res.render('playerBoard', { board: boardB, boardTitle: 'Player B\'s board' });
 });
 
 app.put('/boards/playerA', function (req, res) {
   board.generateBoard(req.body, 'A');
-  res.render('playerABoard', { board: board.boardA });
+  res.render('playerBoard', { board: board.boardA, boardTitle: 'Player A\'s board' });
 });
 
 app.put('/boards/playerB', function (req, res) {
   board.generateBoard(req.body, 'B');
-  res.render('playerBBoard', { board: board.boardB });
+  res.render('playerBoard', { board: board.boardB, boardTitle: 'Player B\'s board' });
 });
