@@ -21,16 +21,23 @@ function generateNewBoard(newBoard, playersBoard) {
     }
 }
 
-function shoot(letterCoordinate, numberCoordinate, board, player) {
-
+function shoot(firstCoordinate, secondCoordinate, board) {
+    let cell = board[firstCoordinate][secondCoordinate];
+    if (cell == 0) {
+        setCellToMissed(firstCoordinate, secondCoordinate, board);
+    }
+    if (cell == 1) {
+        setCellToHit(firstCoordinate, secondCoordinate, board)
+    }
+    return board[firstCoordinate][secondCoordinate];
 }
 
-function setPlayersCellToMissed(board, firstCoordinate, secondCoordinate) {
-    board[secondCoordinate][firstCoordinate] = 2;
+function setCellToMissed(firstCoordinate, secondCoordinate, board) {
+    board[firstCoordinate][secondCoordinate] = 2;
 }
 
-function setPlayersCellToHit(board, firstCoordinate, secondCoordinate) {
-    board[secondCoordinate][firstCoordinate] = 3;
+function setCellToHit(firstCoordinate, secondCoordinate, board) {
+    board[firstCoordinate][secondCoordinate] = 3;
 }
 
 
