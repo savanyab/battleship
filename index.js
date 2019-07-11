@@ -27,9 +27,31 @@ app.get('/boards/playerB', function (req, res) {
 });
 
 app.post('/boards/playerA/shoot', function (req, res) {
+  let cell = board.shoot(req.body.x, req.body.y, board.boardA);
+  db.collection('boards').updateOne({
+    "player": "A"
+  },
+    {
+      $set: {
+        "board": board.boardA
+      }
+    });
+  let isHit = (cell == 3);
+  res.json({"hit": isHit});
 });
 
 app.post('/boards/playerB/shoot', function (req, res) {
+  let cell = board.shoot(req.body.x, req.body.y, board.boardB);
+  db.collection('boards').updateOne({
+    "player": "B"
+  },
+    {
+      $set: {
+        "board": board.boardB
+      }
+    });
+  let isHit = (cell == 3);
+  res.json({"hit": isHit});
 });
 
 app.put('/boards/playerA', function (req, res) {
