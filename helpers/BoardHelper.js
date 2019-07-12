@@ -6,7 +6,7 @@ function generate2DArray() {
     for (let i = 0; i < 10; i++) {
         array[i] = new Array(10);
         for (let j = 0; j < 10; j++) {
-            array[i][j] = 2;
+            array[i][j] = 0;
         }
     }
     return array;
@@ -45,5 +45,6 @@ module.exports = {
     boardA,
     boardB,
     shoot,
-    generateNewBoard
+    generateNewBoard,
+    generate2DArray
 };
