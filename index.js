@@ -5,11 +5,13 @@ const bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost';
 var db;
+const env = process.env.NODE_ENV || 'development';
 
 app.use(bodyParser.json());
 
 MongoClient.connect(url, (err, client) => {
-  db = client.db('battleship');
+  console.log(env)
+  db = (env === 'test') ? client.db('test') : client.db('battleship');
   if (err) return console.log(err)
   app.listen(8000, () => {
     console.log('Running on port on 8000...')
@@ -77,3 +79,5 @@ app.put('/boards/playerB', function (req, res) {
       }
     }).then(() => res.json(board.boardB));
 });
+
+module.exports = app;
