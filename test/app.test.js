@@ -6,10 +6,26 @@ var app = require('../index');
 var board = require('../helpers/BoardHelper');
 var expect = require('chai').expect;
 
+var boardA;
+var boardB;
+const testBoard = [
+  [0, 1, 1, 1, 1, 0, 0, 0, 1, 1],
+  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+  [0, 1, 0, 1, 1, 0, 0, 0, 1, 0],
+  [0, 1, 0, 1, 1, 0, 0, 0, 1, 0],
+  [0, 1, 0, 1, 1, 0, 0, 0, 1, 0],
+  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+  [0, 1, 1, 1, 1, 0, 0, 0, 1, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+  [1, 1, 1, 1, 1, 0, 0, 0, 1, 1]
+]
+
 describe('Battleship API', function () {
-  var boardA;
-  var boardB;
+  this.timeout(5000)
   before(function (done) {
+    boardA = board.generate2DArray();
+    boardB = board.generate2DArray();
     MongoClient.connect(url, (err, client) => {
       db = client.db('test');
       if (err) return console.log(err)
@@ -21,8 +37,6 @@ describe('Battleship API', function () {
   });
 
   beforeEach(function (done) {
-    boardA = board.generate2DArray();
-    boardB = board.generate2DArray();
     db.collection("boards").deleteMany({}).then(function () {
       db.collection('boards').insertMany([
         { "player": "A", "board": boardA },
@@ -46,12 +60,14 @@ describe('Battleship API', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          console.log(res.body)
-          for (let i = 0; i < res.body.board.length; i++) {
-            for (let j = 0; j < res.body.board[i].length; j++) {
-              expect(res.body.board[i][j]).to.equal(boardA[i][j])
-            }
-          }
+          db.collection('boards').findOne({ "player": "A" })
+            .then((playerADoc) => {
+              for (let i = 0; i < res.body.board.length; i++) {
+                for (let j = 0; j < res.body.board[i].length; j++) {
+                  expect(res.body.board[i][j]).to.equal(playerADoc.board[i][j]);
+                }
+              }
+            });
           expect(res.body.player).to.equal("A");
           done();
         });
@@ -66,15 +82,97 @@ describe('Battleship API', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          console.log(res.body)
-          for (let i = 0; i < res.body.board.length; i++) {
-            for (let j = 0; j < res.body.board[i].length; j++) {
-              expect(res.body.board[i][j]).to.equal(boardB[i][j])
-            }
-          }
+          db.collection('boards').findOne({ "player": "B" })
+            .then((playerBDoc) => {
+              for (let i = 0; i < res.body.board.length; i++) {
+                for (let j = 0; j < res.body.board[i].length; j++) {
+                  expect(res.body.board[i][j]).to.equal(playerBDoc.board[i][j]);
+                }
+              }
+            });
           expect(res.body.player).to.equal("B");
           done();
         });
-    });    
+    });
+  });
+
+  describe('POST /boards/playerA/shoot', function () {
+    it('should change cell 2:3 to missed on player A\'s board', function (done) {
+      request(app)
+        .post('/boards/playerA/shoot')
+        .set('Accept', 'application/json')
+        .send({ "x": 2, "y": 3 })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          console.log(res.body)
+          expect(res.body.hit).to.equal(false);
+          db.collection('boards').findOne({ "player": "A" })
+            .then((playerADoc) => {
+              console.log(playerADoc.board)
+              expect(playerADoc.board[2][3]).to.equal(2);
+            });
+          done();
+        });
+    });
+
+    it('should change cell 0:0 to hit on player A\'s board', function (done) {
+      request(app)
+        .post('/boards/playerA/shoot')
+        .set('Accept', 'application/json')
+        .send({ "x": 0, "y": 0 })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          console.log(res.body)
+          expect(res.body.hit).to.equal(true);
+          db.collection('boards').findOne({ "player": "A" })
+            .then((playerADoc) => {
+              console.log(playerADoc.board)
+              expect(playerADoc.board[0][0]).to.equal(3);
+            });
+          done();
+        });
+    });
+  });
+
+  describe('POST /boards/playerB/shoot', function () {
+    it('should change cell 2:3 to missed on player B\'s board', function (done) {
+      request(app)
+        .post('/boards/playerB/shoot')
+        .set('Accept', 'application/json')
+        .send({ "x": 2, "y": 3 })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          console.log(res.body)
+          expect(res.body.hit).to.equal(false);
+          db.collection('boards').findOne({ "player": "B" })
+            .then((playerBDoc) => {
+              console.log(playerBDoc.board)
+              expect(playerBDoc.board[2][3]).to.equal(2);
+            });
+          done();
+        });
+    });
+
+    it('should change cell 0:0 to hit on player B\'s board', function (done) {
+      request(app)
+        .post('/boards/playerB/shoot')
+        .set('Accept', 'application/json')
+        .send({ "x": 0, "y": 0 })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          console.log(res.body)
+          expect(res.body.hit).to.equal(true);
+          db.collection('boards').findOne({ "player": "B" })
+            .then((playerBDoc) => {
+              console.log(playerBDoc.board)
+              expect(playerBDoc.board[0][0]).to.equal(3);
+            });
+          done();
+        });
+    });
   });
 });
