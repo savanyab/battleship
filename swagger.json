@@ -1,0 +1,26 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:8000",
+  "schemes": [
+    "http"
+  ],
+  "info": {
+    "title": "Battleship API"
+  },
+  "paths": {
+    "/boards/playerA": {
+      "get": {},
+      "put": {}
+    },
+    "/boards/playerB": {
+      "get": {},
+      "put": {}
+    },
+    "/boards/playerA/shoot": {
+      "post": {}
+    },
+    "/boards/playerB/shoot": {
+      "post": {}
+    }
+  }
+}
