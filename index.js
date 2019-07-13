@@ -57,7 +57,7 @@ app.post('/boards/playerB/shoot', function (req, res) {
 });
 
 app.put('/boards/playerA', function (req, res) {
-  board.generateNewBoard(req.body.board, board.boardA);
+  board.generateNewBoard(req.body, board.boardA);
   db.collection('boards').updateOne({
     "player": "A"
   },
@@ -69,7 +69,7 @@ app.put('/boards/playerA', function (req, res) {
 });
 
 app.put('/boards/playerB', function (req, res) {
-  board.generateNewBoard(req.body.board, board.boardB);
+  board.generateNewBoard(req.body, board.boardB);
   db.collection('boards').updateOne({
     "player": "B"
   },
