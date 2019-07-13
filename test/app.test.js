@@ -175,4 +175,51 @@ describe('Battleship API', function () {
         });
     });
   });
+
+  describe('PUT /boards/playerA', function () {
+    it('should change player A\'s board to testBoard', function (done) {
+      request(app)
+        .put('/boards/playerA')
+        .set('Accept', 'application/json')
+        .send({ "board": testBoard })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          db.collection('boards').findOne({ "player": "A" })
+            .then((playerADoc) => {
+              for (let i = 0; i < res.body.length; i++) {
+                for (let j = 0; j < res.body[i].length; j++) {
+                  expect(playerADoc.board[i][j]).to.equal(testBoard[i][j]);
+                  expect(res.body[i][j]).to.equal(playerADoc.board[i][j]);
+                }
+              }
+            });
+          done();
+        });
+    });
+  });
+
+  describe('PUT /boards/playerB', function () {
+    it('should change player B\'s board to testBoard', function (done) {
+      request(app)
+        .put('/boards/playerB')
+        .set('Accept', 'application/json')
+        .send({ "board": testBoard })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function (err, res) {
+          db.collection('boards').findOne({ "player": "B" })
+            .then((playerBDoc) => {
+              for (let i = 0; i < res.body.length; i++) {
+                for (let j = 0; j < res.body[i].length; j++) {
+                  expect(playerBDoc.board[i][j]).to.equal(testBoard[i][j]);
+                  expect(res.body[i][j]).to.equal(playerBDoc.board[i][j]);
+                }
+              }
+            });
+          done();
+        });
+    });
+  });
 });
+
