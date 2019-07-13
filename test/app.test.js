@@ -37,12 +37,16 @@ describe('Battleship API', function () {
   });
 
   beforeEach(function (done) {
+    boardA = board.generate2DArray();
+    boardB = board.generate2DArray();
     db.collection("boards").deleteMany({}).then(function () {
       db.collection('boards').insertMany([
         { "player": "A", "board": boardA },
         { "player": "B", "board": boardB }
       ]);
-    }).then(function () { done() });
+    }).then(function () {
+      done()
+    });
   });
 
   after(function (done) {
@@ -105,11 +109,9 @@ describe('Battleship API', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          console.log(res.body)
           expect(res.body.hit).to.equal(false);
           db.collection('boards').findOne({ "player": "A" })
             .then((playerADoc) => {
-              console.log(playerADoc.board)
               expect(playerADoc.board[2][3]).to.equal(2);
             });
           done();
@@ -124,11 +126,9 @@ describe('Battleship API', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          console.log(res.body)
           expect(res.body.hit).to.equal(true);
           db.collection('boards').findOne({ "player": "A" })
             .then((playerADoc) => {
-              console.log(playerADoc.board)
               expect(playerADoc.board[0][0]).to.equal(3);
             });
           done();
@@ -145,11 +145,9 @@ describe('Battleship API', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          console.log(res.body)
           expect(res.body.hit).to.equal(false);
           db.collection('boards').findOne({ "player": "B" })
             .then((playerBDoc) => {
-              console.log(playerBDoc.board)
               expect(playerBDoc.board[2][3]).to.equal(2);
             });
           done();
@@ -164,11 +162,9 @@ describe('Battleship API', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          console.log(res.body)
           expect(res.body.hit).to.equal(true);
           db.collection('boards').findOne({ "player": "B" })
             .then((playerBDoc) => {
-              console.log(playerBDoc.board)
               expect(playerBDoc.board[0][0]).to.equal(3);
             });
           done();
