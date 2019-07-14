@@ -2,10 +2,12 @@
   "swagger": "2.0",
   "host": "localhost:8000",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "info": {
-    "title": "Battleship API"
+    "title": "Battleship API",
+    "version": "0.0.1"
   },
   "paths": {
     "/boards/playerA": {
@@ -23,7 +25,14 @@
       "put": {
         "description": "Change the whole board of player A",
         "parameters": [
-          "#/definitions/NewBoardParameters"
+          {
+            "name": "new board",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Board"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -50,7 +59,14 @@
       "put": {
         "description": "Change the whole board of player B",
         "parameters": [
-          "#/definitions/NewBoardParameters"
+          {
+            "name": "new board",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Board"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -66,12 +82,34 @@
       "post": {
         "description": "Shoot at the cell at position x:y on player A's board",
         "parameters": [
-          "#/definitions/ShootParameters"
+          {
+            "name": "coordinates",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer"
+                },
+                "y": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
             "description": "Return whether shot hit or missed",
-            "schema": "#/definitions/ShootResponse"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hit": {
+                  "type": "boolean"
+                }
+              }
+            }
           }
         }
       }
@@ -80,12 +118,34 @@
       "post": {
         "description": "Shoot at the cell at position x:y on player B's board",
         "parameters": [
-          "#/definitions/ShootParameters"
+          {
+            "name": "coordinates",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer"
+                },
+                "y": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
             "description": "Return whether shot hit or missed",
-            "schema": "#/definitions/ShootResponse"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hit": {
+                  "type": "boolean"
+                }
+              }
+            }
           }
         }
       }
@@ -102,36 +162,6 @@
         "maxItems": 10,
         "items": {
           "type": "integer"
-        }
-      }
-    },
-    "NewBoardParameters": {
-      "name": "new board",
-      "in": "body",
-      "required": "true",
-      "schema": {
-        "$ref": "#/definitions/Board"
-      }
-    },
-    "ShootParameters": {
-      "name": "coordinates",
-      "in": "body",
-      "required": "true",
-      "type": "object",
-      "properties": {
-        "x": {
-          "type": "integer"
-        },
-        "y": {
-          "type": "integer"
-        }
-      }
-    },
-    "ShootResponse": {
-      "type": "object",
-      "properties": {
-        "hit": {
-          "type": "boolean"
         }
       }
     }
