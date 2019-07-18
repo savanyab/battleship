@@ -6,17 +6,19 @@ var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost';
 var db;
 const env = process.env.NODE_ENV || 'development';
+var cors = require('cors');
 
 app.use(bodyParser.json());
 
 MongoClient.connect(url, (err, client) => {
-  console.log(env)
   db = (env === 'test') ? client.db('test') : client.db('battleship');
   if (err) return console.log(err)
   app.listen(8000, () => {
     console.log('Running on port on 8000...')
   });
 });
+
+app.use(cors());
 
 app.get('/boards/playerA', function (req, res) {
   db.collection('boards').findOne({ "player": "A" })
