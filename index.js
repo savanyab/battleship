@@ -20,14 +20,32 @@ MongoClient.connect(url, (err, client) => {
 
 app.use(cors());
 
-app.get('/boards/playerA', function (req, res) {
-  db.collection('boards').findOne({ "player": "A" })
-    .then((playerABoard) => { res.json(playerABoard) });
+app.get('/boards/playerA', async function (req, res) {
+  const findPlayerABoard = () => {
+    return new Promise((resolve, reject) => {
+      db.collection('boards').find({ "player": "A" })
+        .toArray(function (err, board) {
+          err ? reject(err) : resolve(board);
+        });
+    });
+  };
+
+  const playerABoard = await findPlayerABoard();
+  res.json(playerABoard);
 });
 
-app.get('/boards/playerB', function (req, res) {
-  db.collection('boards').findOne({ "player": "B" })
-    .then((playerBBoard) => { res.json(playerBBoard) });
+app.get('/boards/playerB', async function (req, res) {
+  const findPlayerBBoard = () => {
+    return new Promise((resolve, reject) => {
+      db.collection('boards').find({ "player": "B" })
+        .toArray(function (err, board) {
+          err ? reject(err) : resolve(board);
+        });
+    });
+  };
+
+  const playerBBoard = await findPlayerBBoard();
+  res.json(playerBBoard);
 });
 
 app.post('/boards/playerA/shoot', function (req, res) {
