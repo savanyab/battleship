@@ -59,7 +59,7 @@ app.post('/boards/playerA/shoot', function (req, res) {
       }
     });
   let isHit = (cell == 3);
-  res.json({"hit": isHit});
+  res.json({ "hit": isHit });
 });
 
 app.post('/boards/playerB/shoot', function (req, res) {
@@ -73,7 +73,7 @@ app.post('/boards/playerB/shoot', function (req, res) {
       }
     });
   let isHit = (cell == 3);
-  res.json({"hit": isHit});
+  res.json({ "hit": isHit });
 });
 
 app.put('/boards/playerA', function (req, res) {
