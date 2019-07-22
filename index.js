@@ -48,32 +48,40 @@ app.get('/boards/playerB', async function (req, res) {
   res.json(playerBBoard);
 });
 
-app.post('/boards/playerA/shoot', function (req, res) {
+app.post('/boards/playerA/shoot', async function (req, res) {
   let cell = board.shoot(req.body.x, req.body.y, board.boardA);
-  db.collection('boards').updateOne({
-    "player": "A"
-  },
-    {
-      $set: {
-        "board": board.boardA
-      }
-    });
+  const updateCell = () => {
+    return db.collection('boards').updateOne({
+      "player": "A"
+    },
+      {
+        $set: {
+          "board": board.boardA
+        }
+      });
+  }
+  const updateResult = await updateCell();
+
   let isHit = (cell == 3);
-  res.json({ "hit": isHit });
+  res.json({ "hit": isHit, "update's result": updateResult });
 });
 
-app.post('/boards/playerB/shoot', function (req, res) {
+app.post('/boards/playerB/shoot', async function (req, res) {
   let cell = board.shoot(req.body.x, req.body.y, board.boardB);
-  db.collection('boards').updateOne({
-    "player": "B"
-  },
-    {
-      $set: {
-        "board": board.boardB
-      }
-    });
+  const updateCell = () => {
+    return db.collection('boards').updateOne({
+      "player": "B"
+    },
+      {
+        $set: {
+          "board": board.boardB
+        }
+      });
+  }
+  const updateResult = await updateCell();
+
   let isHit = (cell == 3);
-  res.json({ "hit": isHit });
+  res.json({ "hit": isHit, "update's result": updateResult });
 });
 
 app.put('/boards/playerA', function (req, res) {
