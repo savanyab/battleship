@@ -84,28 +84,36 @@ app.post('/boards/playerB/shoot', async function (req, res) {
   res.json({ "hit": isHit, "update's result": updateResult });
 });
 
-app.put('/boards/playerA', function (req, res) {
+app.put('/boards/playerA', async function (req, res) {
   board.generateNewBoard(req.body, board.boardA);
-  db.collection('boards').updateOne({
-    "player": "A"
-  },
-    {
-      $set: {
-        "board": board.boardA
-      }
-    }).then(() => res.json(board.boardA));
+  const updateBoard = () => {
+    return db.collection('boards').updateOne({
+      "player": "A"
+    },
+      {
+        $set: {
+          "board": board.boardA
+        }
+      })
+  }
+  const updateResult = await updateBoard();
+  res.json({ "new board": board.boardA, "update's result": updateResult });
 });
 
-app.put('/boards/playerB', function (req, res) {
+app.put('/boards/playerB', async function (req, res) {
   board.generateNewBoard(req.body, board.boardB);
-  db.collection('boards').updateOne({
-    "player": "B"
-  },
-    {
-      $set: {
-        "board": board.boardB
-      }
-    }).then(() => res.json(board.boardB));
+  const updateBoard = () => {
+    return db.collection('boards').updateOne({
+      "player": "B"
+    },
+      {
+        $set: {
+          "board": board.boardB
+        }
+      })
+  }
+  const updateResult = await updateBoard();
+  res.json({ "new board": board.boardB, "update's result": updateResult });
 });
 
 module.exports = app;
